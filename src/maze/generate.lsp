@@ -97,7 +97,7 @@
 ;; Definition: Given the maze and a list of the neighbours from the cell, counts the amount of path-type neighbours
 ;; In:
 ;;    - maze: The maze object
-;;    - neighbours: The neightbours of the cell (row col) 
+;;    - neighbours: The neighbours of the cell (row col) 
 ;; Out: The amount of path-type elements in the neighbours list
 (defun count-paths (maze neighbours)
   (cond
