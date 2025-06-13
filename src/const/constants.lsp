@@ -5,9 +5,10 @@
 (defconstant +cell-type-wall+ "wall")
 
 ;; Cell "object": 
-;;[
+;;(
 ;;  type: string, 
 ;;  visible: boolean,
-;;  actual: boolean, (used for player and generation)
-;;]
-(defconstant +default-cell+ (list +cell-type-wall+ nil nil))
+;;  current: boolean, (used for player and generation)
+;;  visited: boolean
+;;)
+(defconstant +default-cell+ (list +cell-type-wall+ nil nil nil))
