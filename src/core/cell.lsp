@@ -47,7 +47,6 @@
 ;;    - cell = The cell to visit
 ;; Out: The original cell, changing visited state
 (defun visit (cell)
-(print cell)
   (list
     +cell-type-path+  ; type
     (cadr cell)         ; visible

@@ -182,7 +182,6 @@
     
     ;; Recursive case
     (t (progn
-          (print "Is valid")
           ;; Mark cell as visited
           (let* ((grid (get-grid maze))
                 (cell (get-cell grid row col))
