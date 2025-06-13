@@ -1,9 +1,10 @@
 ;; CONSTANTS
-(load "../src/const/constants.lsp")
+(load "./const/constants.lsp")
 
 ;; CORE
-(load "../src/core/utils.lsp")
-(load "../src/core/cell.lsp")
+(load "./core/utils.lsp")
+(load "./core/cell.lsp")
 
 ;; MAZE
-(load "../src/maze/generate.lsp")
+(load "./maze/maze.lsp")
+(load "./maze/generate.lsp")
