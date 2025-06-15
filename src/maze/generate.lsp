@@ -212,3 +212,7 @@
     (generate-path maze n m)
   )
 )
+
+(defun create-maze (name n m)
+  (write name (encrypt-maze (generate n m)))
+)

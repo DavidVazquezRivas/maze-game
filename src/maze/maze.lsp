@@ -107,3 +107,98 @@
   )
 )
 
+;; Definition: Recursively encrypts one row of the grid, concatenating cell chars.
+;; In:
+;;   - grid: The maze grid (list of rows)
+;;   - row: The index of the current row
+;;   - col: The current column index being encrypted
+;;   - cols: Total number of columns
+;; Out: A string representing the encrypted row from col to end
+(defun encrypt-col (grid row col cols)
+  (cond
+    ((>= col cols) nil)
+    (t (cons (char-from-cell (get-cell grid row col))
+             (encrypt-col grid row (+ col 1) cols)))
+  )
+)
+
+;; Definition: Recursively encrypts all rows of the grid, concatenating lines.
+;; In:
+;;   - grid: The maze grid (list of rows)
+;;   - row: The current row index being encrypted
+;;   - rows: Total number of rows
+;;   - cols: Total number of columns
+;; Out: A string representing the entire maze formatted
+(defun encrypt-row (grid row rows cols)
+  (cond
+    ((>= row rows) nil)
+    (t (append (encrypt-col grid row 0 cols)
+               (list #\Newline)
+               (encrypt-row grid (+ row 1) rows cols)))
+  )
+)
+
+;; Definition: Encrypts the given maze into format:
+;;   - # for walls
+;;   - . for paths
+;;   - e for entrance
+;;   - s for exit
+;;   - \n at the end of each row
+;; In:
+;;   - maze: The maze object
+;; Out: Formatted string encrypting maze
+(defun encrypt-maze (maze)
+  (let* ((grid (get-grid maze))
+         (rows (length grid))
+         (cols (length (car grid))))
+        (encrypt-row grid 0 rows cols)
+  )
+)
+
+;; Definition: Given a row of encrypted cells, returns a row with the cell "objects"
+;; In:
+;;   - row: A list of chars encrypted.
+;; Out: A list of cell "objects"
+(defun decrypt-row (row)
+  (cond 
+    ((null row) nil)
+    (t (cons (cell-from-char (car row)) (decrypt-row (cdr row))))
+  )
+)
+
+;; Definition: Given a list, splits it by rows separated by #\Newline
+;; In:
+;;   - chars: The initial list of characters
+;; Out: List of lists of chars, separated by the splitter #\Newline
+(defun split-by-newline (chars)
+  (reduce (lambda (acc ch)
+            (cond
+              ((char= ch #\Newline) (append acc (list '())))
+              (t (let ((last-row (car (last acc))))
+                 (append (butlast acc)
+                         (list (append last-row (list ch))))))
+            )
+          )
+          chars
+          :initial-value (list '()))
+)
+
+;; Definition: Given a list of encrypted cells, returns a grid for a maze decrypted.
+;; In:
+;;   - grid: The list of characters
+;; Out: A grid of cell "objects"
+(defun decrypt-grid (grid)
+  (mapcar #'decrypt-row (split-by-newline grid))
+)
+
+;; Definition: Given a list of encrypted cells, returns a the maze decrypted.
+;; In:
+;;   - chars: The list of characters
+;; Out: The maze "object"
+(defun decrypt-maze (chars)
+  (init-current (list (decrypt-grid chars) 0 0))
+)
+
+(defun load-maze (name)
+  (decrypt-maze (read name))
+)

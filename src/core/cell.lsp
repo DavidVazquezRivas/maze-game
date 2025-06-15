@@ -1,3 +1,36 @@
+;; Definition: Given a cell, returns the encrypted character
+;; In:
+;;    - cell: Cell "object"
+;; Out: Char encoding the cell
+(defun char-from-cell (cell)
+  (cond
+    ((eq (car cell) +cell-type-wall+) +char-wall+)
+    ((eq (car cell) +cell-type-path+) +char-path+)
+    ((eq (car cell) +cell-type-entrance+) +char-entrance+)
+    ((eq (car cell) +cell-type-exit+) +char-exit+)
+    (t +char-space+)
+  )
+)
+
+;; Definition: Given a cell encrypted char representing a cell
+;; In:
+;;    - c: Encrypted char
+;; Out: New cell "object"
+(defun cell-from-char (c)
+  (list
+    (cond 
+      ((char= c +char-wall+) +cell-type-wall+)
+      ((char= c +char-path+) +cell-type-path+)
+      ((char= c +char-entrance+) +cell-type-entrance+)
+      ((char= c +char-exit+) +cell-type-exit+)
+      (t +cell-type-path+) ; Path as default
+    ); type
+    nil                           ; visible
+    (char= c +char-entrance+)     ; current
+    nil
+  ) 
+)
+
 ;; Definition: Returns a new cell changing the type of the given
 ;; In:
 ;;    - cell = The base cell to copy
