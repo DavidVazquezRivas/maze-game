@@ -194,10 +194,31 @@
   )
 )
 
+;; Definition: Checks if the exit has a path neighbour
+;; In:
+;;    - maze: The maze to check
+;; Out: t if it's posible, nil otherwise
+(defun is-posible (maze)
+  (let* ((grid (get-grid maze))
+         (exit-pos (find-cell-of-type grid +cell-type-exit+)))
+    (> (count-paths maze (get-neighbours (car exit-pos) (cdr exit-pos))) 0)
+  )
+)
+
+;; Definition: Generates a path to the maze given
+;; In:
+;,    - maze: The maze to fix
+;;    - n: Number of rows
+;;    - m: Number of columns
+;; Out: The maze complete
 (defun generate-path (maze m n)
-  (let ((row (get-current-row maze))
-        (col (get-current-col maze)))
-    (process-neighbours maze (get-neighbours row col) m n)
+  (let* ((row (get-current-row maze))
+        (col (get-current-col maze))
+        (result (process-neighbours maze (get-neighbours row col) m n)))
+    (cond 
+      ((is-posible result) result)
+      (t (generate-path maze m n))
+    )
   )
 )
 
@@ -213,6 +234,12 @@
   )
 )
 
+;; Definition: Generates a maze of size n x m, and save it in the given file
+;; In:
+;;    - name: Name of the file to be saved
+;;    - n: Number of rows
+;;    - m: Number of columns
+;; Out: A maze (list: grid current-row current-col) with path carved from entrance
 (defun create-maze (name n m)
   (write name (encrypt-maze (generate n m)))
 )
