@@ -100,7 +100,10 @@
 ;; Out:
 ;;   - The cell at the specified position
 (defun get-cell (grid row col)
-  (nth col (nth row grid))
+  (cond
+    ((or (< row 0) (< col 0)) nil)
+    (t (nth col (nth row grid)))
+  )
 )
 
 ;; Definition: Swaps the given positions in a list.
