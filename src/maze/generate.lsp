@@ -241,5 +241,5 @@
 ;;    - m: Number of columns
 ;; Out: A maze (list: grid current-row current-col) with path carved from entrance
 (defun create-maze (name n m)
-  (write name (encrypt-maze (generate n m)))
+  (write name (encrypt-maze (generate (clamp n +min-dimension+ +max-dimension+) (clamp m +min-dimension+ +max-dimension+))))
 )

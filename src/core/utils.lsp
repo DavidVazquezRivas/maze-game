@@ -169,3 +169,14 @@
 (defun shuffle (lst)
   (shuffle-rec lst (length lst))
 )
+
+;; Definition: Clamps a value within a min and max
+;; In:
+;;   - x: The checked value
+;;   - min: The minimum posible value
+;;   - max: The maximum posible value
+;; Out:
+;;   - Clamped value
+(defun clamp (x min max)
+  (max min (min x max))
+)

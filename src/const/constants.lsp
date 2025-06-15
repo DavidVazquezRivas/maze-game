@@ -15,6 +15,10 @@
 (defconstant +char-space+  #\Space)
 (defconstant +char-newline+  #\Newline)
 
+;; DIMENSION LIMITS
+(defconstant +min-dimension+ 10) ; This will be used as viewport dimension, so less makes no sense
+(defconstant +max-dimension+ 50) ; Increase this causes stack overflow on squared mazes (50x50)
+
 ;; Cell "object": 
 ;;(
 ;;  type: string, 
