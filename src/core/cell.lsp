@@ -31,6 +31,21 @@
   ) 
 )
 
+;; Definition: Given a cell cell, returns the color to paint it
+;; In:
+;;    - cell: The cell to check correspondant color
+;; Out: The color to be painted format rgb
+(defun get-cell-color (cell)
+  (cond 
+    ((string= (caddr cell) t) +player-color+)
+    ((string= (car cell) +cell-type-path+) +path-color+)
+    ((string= (car cell) +cell-type-wall+) +wall-color+)
+    ((string= (car cell) +cell-type-entrance+) +entrance-color+)
+    ((string= (car cell) +cell-type-exit+) +exit-color+)
+    (t +path-color+)
+  )
+)
+
 ;; Definition: Returns a new cell changing the type of the given
 ;; In:
 ;;    - cell = The base cell to copy
