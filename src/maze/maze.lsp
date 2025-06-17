@@ -4,10 +4,11 @@
 ;;   grid: A 2D list of cell objects (the maze grid),
 ;;   current-row: Row of the current/active cell
 ;;   current-col: Column of the current/active cell
+;;   minimap: Boolean flag that indicates wether minimap is on/off
 ;; )
 
 ;; Definition: A default maze with no grid and no current cell set.
-(defconstant +default-maze+ (list nil nil))
+(defconstant +default-maze+ (list 0 0 nil))
 
 ;; Definition: Returns the grid (2D list of cells) from the maze.
 ;; In:
@@ -23,7 +24,7 @@
 ;;   - new-grid: The new 2D list of cells to set as the grid
 ;; Out: A new maze object with the grid updated
 (defun set-grid (maze new-grid)
-  (list new-grid (get-current maze))
+  (list new-grid (get-current maze) (get-minimap maze))
 )
 
 ;; Definition: Returns the position of the current active cell in the maze.
@@ -37,12 +38,26 @@
 ;; Definition: Sets the current cell position in the maze.
 ;; In:
 ;;   - maze: The maze object
-;;   - current-row: Row of the current/active cell
-;;   - current-col: Column of the current/active cell
+;;   - new-row: Row of the current/active cell
+;;   - new-col: Column of the current/active cell
 ;; Out: A new maze object with the current cell updated
-(defun set-current (maze row col)
-  (list (get-grid maze) row col)
-)
+(defun set-current (maze new-row new-col)
+  (let* ((grid (get-grid maze))
+         (old-row (get-current-row maze))
+         (old-col (get-current-col maze))
+         
+         ;; Get and update the old current cell (set current to NIL)
+         (old-cell (get-cell grid old-row old-col))
+         (updated-old-cell (change-cell-current old-cell nil))
+         (grid-with-old-cleared (replace-in-grid grid old-row old-col updated-old-cell))
+         
+         ;; Get and update the new current cell (set current to T)
+         (new-cell (get-cell grid-with-old-cleared new-row new-col))
+         (updated-new-cell (change-cell-current new-cell t))
+         (final-grid (replace-in-grid grid-with-old-cleared new-row new-col updated-new-cell)))
+    
+    ;; Return the updated maze as a list (or a struct if you use one)
+    (list final-grid new-row new-col (get-minimap maze))))
 
 ;; Definition: Returns the row index of the current active cell in the maze.
 ;; In:
@@ -58,6 +73,27 @@
 ;; Out: An integer representing the current cell's column
 (defun get-current-col (maze)
   (caddr maze)
+)
+
+;; Definition: Returns wether the minimap is active or not
+;; In:
+;;    - maze = The maze object
+;; Out: A boolean for minimap state
+(defun get-minimap (maze)
+  (cadddr maze)
+)
+
+;; Definition: Sets wether the minimap is open or not
+;; In:
+;;    - maze: The maze object
+;;    - minimap: The new minimap state 
+;; Out: The maze "object" updating minimap state
+(defun set-minimap (maze minimap)
+  (list
+    (get-grid maze)
+    (get-current maze)
+    minimap
+  )
 )
 
 ;; Definition: Finds the position of the first cell of a given type in the grid.
