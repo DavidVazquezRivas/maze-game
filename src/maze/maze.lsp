@@ -235,6 +235,68 @@
   (init-current (list (decrypt-grid chars) 0 0))
 )
 
+;; Definition: Loads a stored maze from a file on given name
+;; In:
+;;   - name: The name of the file to be loaded
+;; Out: The maze "object"
 (defun load-maze (name)
-  (decrypt-maze (read name))
-)
+  (decrypt-maze (read name)))
+
+;; Definition: Helper to get a cell from the original maze grid safely, returning a wall if it's out of range.
+;; In:
+;;   - grid: The original maze grid.
+;;   - row: The row index to retrieve.
+;;   - col: The column index to retrieve.
+;; Out: The cell at (row, col) or the +default-cell+ if out of bounds.
+(defun safe-get-cell (grid row col)
+  (let* ((num-rows (length grid))
+         (row-content (cond
+                        ((and (>= row 0) (< row num-rows)) (nth row grid))
+                        (t nil)))
+         (num-cols (cond
+                      (row-content (length row-content))
+                      (t 0))))
+    (let ((cell (cond
+                  ((and row-content (>= col 0) (< col num-cols)) (nth col row-content))
+                  (t +default-cell+))))
+      cell)))
+
+;; Definition: Get's the viewport nth row of the grid given
+;; In:
+;;   - grid: The grid to get the viewport
+;;   - row: Current generating row 
+;;   - col: Current generating col (for recursive)
+;;   - max-col: The column number where the viewport ends
+;; Out: The grid of cells, represening the current viewport of the maze
+(defun get-viewport-row (grid row col max-col)
+  (cond 
+    ((= max-col col) (cons (safe-get-cell grid row col) nil))
+    (t (cons (safe-get-cell grid row col) (get-viewport-row grid row (+ col 1) max-col)))))
+
+;; Definition: Get's the viewport grid of a grid given
+;; In:
+;;   - grid: The grid to get the viewport
+;;   - row: Current generating row (for recursive)
+;;   - min-col: The column number where the viewport starts
+;;   - max-col: The column number where the viewport ends
+;;   - max-row: The row number where the viewport ends
+;; Out: The grid of cells, represening the current viewport of the maze
+(defun get-viewport-grid (grid row min-col max-col max-row)
+  ;; (format t "get-viewport-grid called with row=~a, min-col=~a, max-col=~a and max-row=~a" row min-col max-col max-row)
+  (cond 
+    ((= max-row row) (cons (get-viewport-row grid row min-col max-col) nil))
+    (t (cons (get-viewport-row grid row min-col max-col) (get-viewport-grid grid (+ row 1) min-col max-col max-row)))))
+
+;; Definition: Returns the viewport grid of a maze given, based on the viewport-size constant, works as a facade for the previous function
+;; In:
+;;   - maze: The maze to get the viewport
+;; Out: The grid of cells, represening the current viewport of the maze
+(defun get-viewport (maze)
+  (let* ((half (floor (/ +viewport-size+ 2)))
+         (current-col (get-current-col maze))
+         (current-row (get-current-row maze))
+         (min-col (- current-col half))
+         (max-col (+ current-col half))
+         (min-row (- current-row half))
+         (max-row (+ current-row half)))
+    (get-viewport-grid (get-grid maze) min-row min-col max-col max-row)))
