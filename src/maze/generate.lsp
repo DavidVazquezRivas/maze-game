@@ -5,9 +5,7 @@
 (defun create-row (m)
   (cond
     ((= m 0) nil)
-    (t (cons +default-cell+ (create-row (- m 1))))
-  )
-)
+    (t (cons +default-cell+ (create-row (- m 1))))))
 
 ;; Definition: Creates a maze grid with default values and an initial state.
 ;; In:
@@ -24,9 +22,7 @@
                  (t (cons (create-row m) (generate-rows (- rows 1)))))))
       (generate-rows n))
     0
-    0
-  )
-)
+    0))
 
 ;; Definition: Adds an entrance to the maze on the side given.
 ;; In:
@@ -41,12 +37,8 @@
                         n 
                         m
                         (lambda (cell) (change-cell-type cell +cell-type-entrance+))
-                         
-                         side
-                      )))
-    (list updated-grid (cadr maze) (caddr maze)) ; Keep the current position unchanged
-  )
-)
+                         side)))
+    (list updated-grid (cadr maze) (caddr maze)))) ; Keep the current position unchanged
 
 ;; Definition: Adds an exit to the maze on the side given.
 ;; In:
@@ -59,9 +51,7 @@
   (let ((updated-grid (apply-on-side (get-grid maze) n m
                          (lambda (cell) (change-cell-type cell +cell-type-exit+))
                          side)))
-    (list updated-grid (cadr maze) (caddr maze))
-  )
-)
+    (list updated-grid (cadr maze) (caddr maze))))
 
 ;; Definition: Adds entrance and exit on opposite sides of the maze.
 ;; In:
@@ -75,10 +65,7 @@
       (add-entrance maze n m side)
       n
       m
-      (opposite-side side)
-    )
-  )
-)
+      (opposite-side side))))
 
 ;; Definition: Returns the list of orthogonal neighbours (up, down, left, right) of the given position.
 ;; In:
@@ -90,9 +77,7 @@
     (cons (- row 1) col) ; Up
     (cons (+ row 1) col) ; Down
     (cons row (- col 1)) ; Left
-    (cons row (+ col 1)) ; Right
-  )
-)
+    (cons row (+ col 1)))) ; Right
 
 ;; Definition: Given the maze and a list of the neighbours from the cell, counts the amount of path-type neighbours
 ;; In:
@@ -109,9 +94,7 @@
          (+ (cond
               ((eq (car cell) +cell-type-path+) 1)
               (t 0))
-            (count-paths maze (cdr neighbours)))))
-  )
-)
+            (count-paths maze (cdr neighbours)))))))
 
 ;; Definition: Checks is a position given is valid to be visited
 ;; In:
@@ -130,21 +113,13 @@
       (cond 
         ;; Is visited
         ((is-visited cell) nil)
-        
-        
         ;; Is not a wall
         ((not (eq (car cell) +cell-type-wall+)) nil)
-        
-        
         ;; Has more than one path neighbour
         ((> (count-paths maze (get-neighbours row col)) 1) nil)
-        
         ;; Is valid
         (t t)
-      )
-    ))
-  )
-)
+      )))))
 
 ;; Definition: Processes and explores a neighbour list
 ;; In:
@@ -156,15 +131,13 @@
 (defun process-neighbours (maze neighbours m n)
   (cond
     ((null neighbours) maze)
-    (t (let* ((pos (car neighbours))
-              (r (car pos))
-              (c (cdr pos)))
-         ;; Explore this neighbour and update maze
-         (setq maze (explore maze r c m n))
-         ;; Process other neighbours
-         (process-neighbours maze (cdr neighbours) m n)))
-  )
-)
+    (t  (let* ( (pos (car neighbours))
+                (r (car pos))
+                (c (cdr pos)))
+          ;; Explore this neighbour and update maze
+          (setq maze (explore maze r c m n))
+          ;; Process other neighbours
+          (process-neighbours maze (cdr neighbours) m n)))))
 
 
 ;; Definition: Explores a cell, and processes it's neighbours
@@ -190,9 +163,7 @@
             (setf maze (set-grid maze new-grid)))
 
           ;; Process neighbours
-          (process-neighbours maze (shuffle (get-neighbours row col)) m n)))
-  )
-)
+          (process-neighbours maze (shuffle (get-neighbours row col)) m n)))))
 
 ;; Definition: Checks if the exit has a path neighbour
 ;; In:
@@ -201,9 +172,7 @@
 (defun is-posible (maze)
   (let* ((grid (get-grid maze))
          (exit-pos (find-cell-of-type grid +cell-type-exit+)))
-    (> (count-paths maze (get-neighbours (car exit-pos) (cdr exit-pos))) 0)
-  )
-)
+    (> (count-paths maze (get-neighbours (car exit-pos) (cdr exit-pos))) 0)))
 
 ;; Definition: Generates a path to the maze given
 ;; In:
@@ -217,10 +186,7 @@
         (result (process-neighbours maze (get-neighbours row col) m n)))
     (cond 
       ((is-posible result) result)
-      (t (generate-path maze m n))
-    )
-  )
-)
+      (t (generate-path maze m n)))))
 
 ;; Definition: Generates a maze of size n x m, defining the entrance and exit
 ;;             and generating a path from the entrance.
@@ -230,9 +196,7 @@
 ;; Out: A maze (list: grid current-row current-col) with path carved from entrance
 (defun generate (n m)
   (let ((maze (init-current (add-borders (create-grid n m) n m))))
-    (generate-path maze n m)
-  )
-)
+    (generate-path maze n m)))
 
 ;; Definition: Generates a maze of size n x m, and save it in the given file
 ;; In:
@@ -242,4 +206,4 @@
 ;; Out: A maze (list: grid current-row current-col) with path carved from entrance
 (defun create-maze (name n m)
   (write-maze name (encrypt-maze (generate (clamp n +min-dimension+ +max-dimension+) (clamp m +min-dimension+ +max-dimension+))))
-)
+  (write-stats name nil))

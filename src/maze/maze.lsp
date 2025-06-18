@@ -15,8 +15,7 @@
 ;;   - maze: The maze object
 ;; Out: The grid part of the maze
 (defun get-grid (maze)
-  (car maze)
-)
+  (car maze))
 
 ;; Definition: Sets the grid (2D list of cells) in the maze.
 ;; In:
@@ -24,16 +23,14 @@
 ;;   - new-grid: The new 2D list of cells to set as the grid
 ;; Out: A new maze object with the grid updated
 (defun set-grid (maze new-grid)
-  (list new-grid (get-current maze) (get-minimap maze))
-)
+  (list new-grid (get-current maze) (get-minimap maze)))
 
 ;; Definition: Returns the position of the current active cell in the maze.
 ;; In:
 ;;    - maze = The maze object
 ;; Out: A (row . col) pair representing the current cell's position
 (defun get-current (maze)
-  (cadr maze)
-)
+  (cadr maze))
 
 ;; Definition: Sets the current cell position in the maze.
 ;; In:
@@ -64,24 +61,21 @@
 ;;    - maze = The maze object
 ;; Out: An integer representing the current cell's row
 (defun get-current-row (maze)
-  (cadr maze)
-)
+  (cadr maze))
 
 ;; Definition: Returns the column index of the current active cell in the maze.
 ;; In:
 ;;    - maze = The maze object
 ;; Out: An integer representing the current cell's column
 (defun get-current-col (maze)
-  (caddr maze)
-)
+  (caddr maze))
 
 ;; Definition: Returns wether the minimap is active or not
 ;; In:
 ;;    - maze = The maze object
 ;; Out: A boolean for minimap state
 (defun get-minimap (maze)
-  (cadddr maze)
-)
+  (cadddr maze))
 
 ;; Definition: Sets wether the minimap is open or not
 ;; In:
@@ -110,8 +104,7 @@
 ;;   - target-type: The type to look for (e.g., +cell-type-entrance+)
 ;; Out: A dotted pair (row . col) representing the position of the first matching cell, or nil if not found
 (defun find-cell-of-type (grid target-type)
-  (find-cell-of-type-helper grid target-type 0)
-)
+  (find-cell-of-type-helper grid target-type 0))
 
 ;; Helper function with row index tracking
 (defun find-cell-of-type-helper (grid target-type row-index)
@@ -121,12 +114,7 @@
      (let ((col-index (find-in-row (car grid) target-type 0)))
        (cond
          (col-index (cons row-index col-index)) ; Found: return (row . col)
-         (t (find-cell-of-type-helper (cdr grid) target-type (+ row-index 1)))
-       )
-     )
-    )
-  )
-)
+         (t (find-cell-of-type-helper (cdr grid) target-type (+ row-index 1))))))))
 
 
 ;; Searches a single row for the target type
@@ -134,9 +122,7 @@
   (cond
     ((null row) nil) ; End of row
     ((equal (car (car row)) target-type) col-index) ; Found
-    (t (find-in-row (cdr row) target-type (+ col-index 1)))
-  )
-)
+    (t (find-in-row (cdr row) target-type (+ col-index 1)))))
 
 
 ;; Definition: Initializes the current cell position of the maze by locating the entrance cell.
@@ -147,9 +133,7 @@
   (let ((pos (find-cell-of-type (get-grid maze) +cell-type-entrance+)))
     (cond
       (pos (set-current maze (car pos) (cdr pos)))
-      (t maze))
-  )
-)
+      (t maze))))
 
 ;; Definition: Recursively encrypts one row of the grid, concatenating cell chars.
 ;; In:
@@ -162,9 +146,7 @@
   (cond
     ((>= col cols) nil)
     (t (cons (char-from-cell (get-cell grid row col))
-             (encrypt-col grid row (+ col 1) cols)))
-  )
-)
+             (encrypt-col grid row (+ col 1) cols)))))
 
 ;; Definition: Recursively encrypts all rows of the grid, concatenating lines.
 ;; In:
@@ -178,9 +160,7 @@
     ((>= row rows) nil)
     (t (append (encrypt-col grid row 0 cols)
                (list #\Newline)
-               (encrypt-row grid (+ row 1) rows cols)))
-  )
-)
+               (encrypt-row grid (+ row 1) rows cols)))))
 
 ;; Definition: Encrypts the given maze into format:
 ;;   - # for walls
@@ -195,9 +175,7 @@
   (let* ((grid (get-grid maze))
          (rows (length grid))
          (cols (length (car grid))))
-        (encrypt-row grid 0 rows cols)
-  )
-)
+        (encrypt-row grid 0 rows cols)))
 
 ;; Definition: Given a row of encrypted cells, returns a row with the cell "objects"
 ;; In:
@@ -206,9 +184,7 @@
 (defun decrypt-row (row)
   (cond 
     ((null row) nil)
-    (t (cons (cell-from-char (car row)) (decrypt-row (cdr row))))
-  )
-)
+    (t (cons (cell-from-char (car row)) (decrypt-row (cdr row))))))
 
 ;; Definition: Given a list, splits it by rows separated by #\Newline
 ;; In:
@@ -220,28 +196,23 @@
               ((char= ch #\Newline) (append acc (list '())))
               (t (let ((last-row (car (last acc))))
                  (append (butlast acc)
-                         (list (append last-row (list ch))))))
-            )
-          )
+                         (list (append last-row (list ch))))))))
           chars
-          :initial-value (list '()))
-)
+          :initial-value (list '())))
 
 ;; Definition: Given a list of encrypted cells, returns a grid for a maze decrypted.
 ;; In:
 ;;   - grid: The list of characters
 ;; Out: A grid of cell "objects"
 (defun decrypt-grid (grid)
-  (mapcar #'decrypt-row (split-by-newline grid))
-)
+  (mapcar #'decrypt-row (split-by-newline grid)))
 
 ;; Definition: Given a list of encrypted cells, returns a the maze decrypted.
 ;; In:
 ;;   - chars: The list of characters
 ;; Out: The maze "object"
 (defun decrypt-maze (chars)
-  (init-current (list (decrypt-grid chars) 0 0))
-)
+  (init-current (list (decrypt-grid chars) 0 0)))
 
 ;; Definition: Loads a stored maze from a file on given name
 ;; In:
