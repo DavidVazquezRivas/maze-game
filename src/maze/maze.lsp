@@ -248,7 +248,7 @@
 ;;   - name: The name of the file to be loaded
 ;; Out: The maze "object"
 (defun load-maze (name)
-  (decrypt-maze (read name)))
+  (decrypt-maze (read-maze name)))
 
 ;; Definition: Helper to get a cell from the original maze grid safely, returning a wall if it's out of range.
 ;; In:
@@ -316,6 +316,7 @@
 ;;   - new-col: New player's column
 ;; Out: The maze updated
 (defun move-player (maze new-row new-col)
+  (setq steps (+ steps 1))  ; Even if you can't move, step increases. Don't crash with walls!
   (cond
     ((string= (car (safe-get-cell (get-grid maze) new-row new-col)) +cell-type-wall+) maze)
     (t (set-current maze new-row new-col))))

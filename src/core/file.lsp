@@ -1,11 +1,11 @@
 ;; Function: write
-;; Description: Writes content to the specified file. If the file does not exist, it is created.
+;; Description: Writes content to the specified file in maze path. If the file does not exist, it is created.
 ;;              Content is written character by character.
 ;; In:
 ;;   - name: String. Name (or path) of the file to write to.
 ;;   - content: List of characters to write into the file.
 ;; Out: None
-(defun write (name content)
+(defun write-maze (name content)
   (let ((fp (open (concatenate 'string +maze-path+ name) :direction :output
                        :if-exists :supersede
                        :if-does-not-exist :create)))
@@ -13,6 +13,8 @@
        (close fp)
   )
 )
+
+
 
 ;; Function: write-aux
 ;; Description: Helper function for 'write'. Writes a list of characters to an open file stream.
@@ -28,11 +30,11 @@
   )
 )
 
-;; Description: Reads content from the specified file character by character and returns it as a list.
+;; Description: Reads content from the specified file in maze path, character by character and returns it as a list.
 ;; In:
 ;;   - name: String. Name (or path) of the file to read.
 ;; Out: List of characters read from the file.
-(defun read (name)
+(defun read-maze (name)
   (let* ((fp (open (concatenate 'string +maze-path+ name) :direction :input))
          (content (read-aux fp)))
         (close fp)
