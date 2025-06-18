@@ -28,6 +28,13 @@
 (defconstant +entrance-color+ '(255 95 60))
 (defconstant +exit-color+ '(60 255 70))
 (defconstant +player-color+ '(60 100 255))
+(defconstant +screen-height-chars+ 25)
+(defconstant +screen-width-chars+ 80)
+(defconstant +char-width+ 8)
+(defconstant +char-height+ 15)
+
+;; UI CONSTANTS
+(defconstant +instructions+ '("Instructions:" "" "W: Move up." "A: Move left." "S: Move down." "D: Move right." "M: Switch minimap." "Esc: Exit game."))
 
 ;; Cell "object": 
 ;;(
