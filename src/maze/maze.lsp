@@ -91,10 +91,18 @@
 (defun set-minimap (maze minimap)
   (list
     (get-grid maze)
-    (get-current maze)
-    minimap
-  )
-)
+    (get-current-row maze)
+    (get-current-col maze)
+    minimap))
+
+;; Definition: Switches the minimap state
+;; In:
+;;    - maze = The maze object
+;; Out: The updated maze
+(defun switch-minimap (maze)
+  (cond
+    ((get-minimap maze) (set-minimap maze nil))
+    (t (set-minimap maze t))))
 
 ;; Definition: Finds the position of the first cell of a given type in the grid.
 ;; In:
@@ -300,3 +308,54 @@
          (min-row (- current-row half))
          (max-row (+ current-row half)))
     (get-viewport-grid (get-grid maze) min-row min-col max-col max-row)))
+
+;; Definition: Moves the player to a given position if it's possible
+;; In:
+;;   - maze: The maze of the game
+;;   - new-row: New player's row
+;;   - new-col: New player's column
+;; Out: The maze updated
+(defun move-player (maze new-row new-col)
+  (cond
+    ((string= (car (safe-get-cell (get-grid maze) new-row new-col)) +cell-type-wall+) maze)
+    (t (set-current maze new-row new-col))))
+
+;; Definition: Moves the player up if it's posible
+;; In:
+;;   - maze: The maze of the game
+;; Out: The maze updated
+(defun move-up (maze)
+  (move-player 
+    maze 
+    (- (get-current-row maze) 1)
+    (get-current-col maze)))
+
+;; Definition: Moves the player down if it's posible
+;; In:
+;;   - maze: The maze of the game
+;; Out: The maze updated
+(defun move-down (maze)
+  (move-player 
+    maze 
+    (+ (get-current-row maze) 1)
+    (get-current-col maze)))
+
+;; Definition: Moves the player left if it's posible
+;; In:
+;;   - maze: The maze of the game
+;; Out: The maze updated
+(defun move-left (maze)
+  (move-player 
+    maze 
+    (get-current-row maze)
+    (- (get-current-col maze) 1)))
+
+;; Definition: Moves the player right if it's posible
+;; In:
+;;   - maze: The maze of the game
+;; Out: The maze updated
+(defun move-right (maze)
+  (move-player 
+    maze 
+    (get-current-row maze)
+    (+ (get-current-col maze) 1)))

@@ -82,9 +82,3 @@
         (draw-grid
               (floor (/ (min +screen-height+ +screen-width+) (+ 1 +viewport-size+))) ; +1 is to countwith player position
               (get-viewport maze))))))
-
-(defmacro test (file)
-  `(progn
-     (cls)
-     (draw-maze (set-minimap (set-current (load-maze ,file) 5 6) t) )
-     (values)))  ; evita impresión
