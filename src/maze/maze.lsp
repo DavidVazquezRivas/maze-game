@@ -309,7 +309,7 @@
          (max-row (+ current-row half)))
     (get-viewport-grid (get-grid maze) min-row min-col max-col max-row)))
 
-;; Definition: Moves the player to a given position if it's posible
+;; Definition: Moves the player to a given position if it's possible
 ;; In:
 ;;   - maze: The maze of the game
 ;;   - new-row: New player's row
