@@ -16,8 +16,18 @@
 (defconstant +char-newline+  #\Newline)
 
 ;; DIMENSION LIMITS
-(defconstant +min-dimension+ 10) ; This will be used as viewport dimension, so less makes no sense
+(defconstant +min-dimension+ 10) ; This will be used as viewport dimension, so less than 10 makes no sense
 (defconstant +max-dimension+ 50) ; Increase this causes stack overflow on squared mazes (50x50)
+
+;; GRAPHICS CONSTANTS
+(defconstant +screen-height+ 375)
+(defconstant +screen-width+ 640)
+(defconstant +viewport-size+ 10)
+(defconstant +wall-color+ '(0 0 0))
+(defconstant +path-color+ '(255 255 255))
+(defconstant +entrance-color+ '(255 95 60))
+(defconstant +exit-color+ '(60 255 70))
+(defconstant +player-color+ '(60 100 255))
 
 ;; Cell "object": 
 ;;(

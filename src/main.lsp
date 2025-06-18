@@ -9,3 +9,6 @@
 ;; MAZE
 (load "./maze/maze.lsp")
 (load "./maze/generate.lsp")
+
+;; GRAPHICS
+(load "./graphics/graphics.lsp")
