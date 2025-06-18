@@ -52,7 +52,7 @@
 ;;   - stat: The stat
 ;; Out: String representing the stat
 (defun format-stat (stat)
-  (format nil "Steps: ~A, Time: ~A miliseconds~%" (car stat) (cadr stat)))
+  (format nil "Steps: ~A, Time: ~A milliseconds~%" (car stat) (cadr stat)))
 
 ;; Definition: Display top stats from a file
 ;; In:
