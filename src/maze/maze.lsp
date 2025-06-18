@@ -91,10 +91,18 @@
 (defun set-minimap (maze minimap)
   (list
     (get-grid maze)
-    (get-current maze)
-    minimap
-  )
-)
+    (get-current-row maze)
+    (get-current-col maze)
+    minimap))
+
+;; Definition: Switches the minimap state
+;; In:
+;;    - maze = The maze object
+;; Out: The updated maze
+(defun switch-minimap (maze)
+  (cond
+    ((get-minimap maze) (set-minimap maze nil))
+    (t (set-minimap maze t))))
 
 ;; Definition: Finds the position of the first cell of a given type in the grid.
 ;; In:
