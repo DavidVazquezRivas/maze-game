@@ -1,5 +1,6 @@
 ;; PATHS
 (defconstant +maze-path+ "../data/mazes/")
+(defconstant +stats-path+ "../data/stats/")
 
 ;; CELL TYPES
 (defconstant +cell-type-entrance+ "entrance")
@@ -44,6 +45,7 @@
 
 ;; UI CONSTANTS
 (defconstant +instructions+ '("Instructions:" "" "W: Move up." "A: Move left." "S: Move down." "D: Move right." "M: Switch minimap." "Esc: Exit game."))
+(defconstant +top-limit+ 3)
 
 ;; Cell "object": 
 ;;(
