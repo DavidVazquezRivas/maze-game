@@ -33,6 +33,14 @@
 (defconstant +char-width+ 8)
 (defconstant +char-height+ 15)
 
+;; GAME CONSTANTS
+(defconstant up-keys    '(119 87))  ; w / W
+(defconstant down-keys  '(115 83))  ; s / S
+(defconstant left-keys  '(97 65))   ; a / A
+(defconstant right-keys '(100 68))  ; d / D
+(defconstant map-keys   '(109 77))  ; m / M
+(defconstant esc-key    27)         ; ESC
+
 ;; UI CONSTANTS
 (defconstant +instructions+ '("Instructions:" "" "W: Move up." "A: Move left." "S: Move down." "D: Move right." "M: Switch minimap." "Esc: Exit game."))
 
