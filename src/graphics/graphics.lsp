@@ -115,4 +115,5 @@
 ;; Out: None
 (defun clear-screen ()
   (cls)
+  (color 0 0 0)
   (draw-instructions))
