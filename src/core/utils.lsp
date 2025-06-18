@@ -180,3 +180,20 @@
 (defun clamp (x min max)
   (max min (min x max))
 )
+
+;; Description: Applies a function to each element of a list and 
+;;              concatenates the results with a separator string.
+;; In:
+;;   - func: Function to apply to each element (returns a string)
+;;   - list: List of elements to process
+;;   - sep: Separator string to insert between results
+;; Out:
+;;   - A single string with all mapped elements joined by sep
+(defun mapconcat (func list sep)
+  (cond
+    ((null list) "")
+    ((null (cdr list)) (funcall func (car list)))
+    (t (concatenate 'string
+                    (funcall func (car list))
+                    sep
+                    (mapconcat func (cdr list) sep)))))
