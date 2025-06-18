@@ -82,3 +82,37 @@
         (draw-grid
               (floor (/ (min +screen-height+ +screen-width+) (+ 1 +viewport-size+))) ; +1 is to countwith player position
               (get-viewport maze))))))
+
+;; Definition: Paints the first instruction in the given
+;; In:
+;;   - Instructions: The instruction list
+;;   - x: The character column
+;;   - y: The character row
+;; Out: None
+(defun draw-instruction (instructions x y)
+  (cond 
+    ((null instructions) nil)
+    (t
+      (goto-xy x y)
+      (color 0 0 0)
+      (princ (car instructions))
+      (draw-instruction
+        (cdr instructions)
+        x
+        (+ y 1)))))
+
+;; Definition: Paints the instructions
+;; In: None
+;; Out: None
+(defun draw-instructions ()
+  (draw-instruction 
+    +instructions+
+    (+ 2 (ceiling (/ +screen-height+ +char-width+)))
+    2))
+
+;; Definition: Clears the screen and paints the basic UI
+;; In: None
+;; Out: None
+(defun clear-screen ()
+  (cls)
+  (draw-instructions))

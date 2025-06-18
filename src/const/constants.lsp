@@ -17,17 +17,33 @@
 
 ;; DIMENSION LIMITS
 (defconstant +min-dimension+ 10) ; This will be used as viewport dimension, so less than 10 makes no sense
-(defconstant +max-dimension+ 50) ; Increase this causes stack overflow on squared mazes (50x50)
+(defconstant +max-dimension+ 45) ; Increase this causes stack overflow on squared mazes (45x45)
 
 ;; GRAPHICS CONSTANTS
 (defconstant +screen-height+ 375)
 (defconstant +screen-width+ 640)
+(defconstant +screen-height-chars+ 25)
+(defconstant +screen-width-chars+ 80)
+(defconstant +char-width+ 8)
+(defconstant +char-height+ 15)
 (defconstant +viewport-size+ 10)
+
 (defconstant +wall-color+ '(0 0 0))
 (defconstant +path-color+ '(255 255 255))
 (defconstant +entrance-color+ '(255 95 60))
 (defconstant +exit-color+ '(60 255 70))
 (defconstant +player-color+ '(60 100 255))
+
+;; GAME CONSTANTS
+(defconstant up-keys    '(119 87))  ; w / W
+(defconstant down-keys  '(115 83))  ; s / S
+(defconstant left-keys  '(97 65))   ; a / A
+(defconstant right-keys '(100 68))  ; d / D
+(defconstant map-keys   '(109 77))  ; m / M
+(defconstant esc-key    27)         ; ESC
+
+;; UI CONSTANTS
+(defconstant +instructions+ '("Instructions:" "" "W: Move up." "A: Move left." "S: Move down." "D: Move right." "M: Switch minimap." "Esc: Exit game."))
 
 ;; Cell "object": 
 ;;(
