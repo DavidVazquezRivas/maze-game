@@ -13,5 +13,8 @@
 ;; GRAPHICS
 (load "./graphics/graphics.lsp")
 
+;; STATS
+(load "./stats/stats.lsp")
+
 ;; GAME
 (load "./game/game.lsp")

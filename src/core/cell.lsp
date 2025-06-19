@@ -8,9 +8,7 @@
     ((eq (car cell) +cell-type-path+) +char-path+)
     ((eq (car cell) +cell-type-entrance+) +char-entrance+)
     ((eq (car cell) +cell-type-exit+) +char-exit+)
-    (t +char-space+)
-  )
-)
+    (t +char-space+)))
 
 ;; Definition: Given a cell encrypted char representing a cell
 ;; In:
@@ -23,13 +21,10 @@
       ((char= c +char-path+) +cell-type-path+)
       ((char= c +char-entrance+) +cell-type-entrance+)
       ((char= c +char-exit+) +cell-type-exit+)
-      (t +cell-type-path+) ; Path as default
-    ); type
+      (t +cell-type-path+)); type
     nil                           ; visible
     (char= c +char-entrance+)     ; current
-    nil
-  ) 
-)
+    nil))
 
 ;; Definition: Given a cell cell, returns the color to paint it
 ;; In:
@@ -42,9 +37,7 @@
     ((string= (car cell) +cell-type-wall+) +wall-color+)
     ((string= (car cell) +cell-type-entrance+) +entrance-color+)
     ((string= (car cell) +cell-type-exit+) +exit-color+)
-    (t +path-color+)
-  )
-)
+    (t +path-color+)))
 
 ;; Definition: Returns a new cell changing the type of the given
 ;; In:
@@ -52,8 +45,7 @@
 ;;    - new-type = The new type to set on the cell
 ;; Out: New cell "object"
 (defun change-cell-type(cell new-type)
-  (cons new-type (cdr cell))
-)
+  (cons new-type (cdr cell)))
 
 ;; Definition: Returns a new cell changing the visibility of the given
 ;; In:
@@ -63,10 +55,7 @@
 (defun change-cell-visibility (cell new-visibility)
   (cons (car cell)           ; Type
         (cons new-visibility ; Visibility
-          (cddr cell)        ; Other fields
-        )
-  )
-)
+          (cddr cell))))     ; Other fields
 
 ;; Definition: Returns a new cell changing the "current" flag of the given cell.
 ;; In:
@@ -78,17 +67,14 @@
     (car cell)               ; Type
     (cons (cadr cell)        ; Visibility
     (cons is-current         ; Current flag
-    (cdddr cell)))           ; Remaining fields
-  )
-)
+    (cdddr cell)))))         ; Remaining fields
 
 ;; Definition: Checks is a cell has been visited
 ;; In:
 ;;    - cell = The cell to check status
 ;; Out: t if cell has been visited, nil otherwise
 (defun is-visited (cell)
-  (cadddr cell)
-)
+  (cadddr cell))
 
 ;; Definition: Marks a cell as visited
 ;; In:
@@ -100,6 +86,4 @@
     (cadr cell)         ; visible
     (caddr cell)        ; current
     t                   ; visited
-    (cddddr cell)       ; Remaining fields
-  )
-)
+    (cddddr cell)))       ; Remaining fields

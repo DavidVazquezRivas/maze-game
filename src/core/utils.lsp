@@ -10,10 +10,7 @@
     ((= index 0) (cons new-elem (cdr lst)))
     (t (cons 
       (car lst)
-      (replace-in-list (cdr lst) (- index 1) new-elem)
-    ))
-  )
-)
+      (replace-in-list (cdr lst) (- index 1) new-elem)))))
 
 ;; Definition: Returns a new grid replacing the element at the given row and column
 ;; In:
@@ -26,9 +23,7 @@
   (replace-in-list 
     grid 
     row 
-    (replace-in-list (nth row grid) col new-elem)
-  )
-)
+    (replace-in-list (nth row grid) col new-elem)))
 
 ;; Definition: Applies a function to the cell located on the given side of the grid,
 ;;             at a random non-corner position, and returns the updated grid.
@@ -53,9 +48,7 @@
     ((= side 3) ; right column
      (let ((row (+ 1 (random (- n 2)))))
        (replace-in-grid grid row (- m 1) (funcall f (nth (- m 1) (nth row grid))))))
-    (t grid)
-  )
-)
+    (t grid)))
 
 ;; Definition: Returns the opposite side of a given side.
 ;; In:
@@ -67,9 +60,7 @@
     ((= side 1) 0)
     ((= side 2) 3)
     ((= side 3) 2)
-    (t side) ; fallback if invalid input
-  )
-) 
+    (t side))) ; fallback if invalid input
 
 ;; Definition: Returns a list of elements from the input list for which the predicate returns true.
 ;; In:
@@ -79,9 +70,7 @@
 (defun remove-if-not (pred lst)
   (cond ((null lst) nil)
         ((funcall pred (car lst)) (cons (car lst) (remove-if-not pred (cdr lst))))
-        (t (remove-if-not pred (cdr lst)))
-  )
-)
+        (t (remove-if-not pred (cdr lst)))))
 
 ;; Definition: Returns a random element from a non-empty list
 ;; In:
@@ -89,8 +78,7 @@
 ;; Out:
 ;;   - an element randomly selected from lst
 (defun random-element (lst)
-  (nth (random (length lst)) lst)
-)
+  (nth (random (length lst)) lst))
 
 ;; Definition: Returns the cell at the given position in the grid
 ;; In:
@@ -102,9 +90,7 @@
 (defun get-cell (grid row col)
   (cond
     ((or (< row 0) (< col 0)) nil)
-    (t (nth col (nth row grid)))
-  )
-)
+    (t (nth col (nth row grid)))))
 
 ;; Definition: Swaps the given positions in a list.
 ;; In:
@@ -116,9 +102,7 @@
 (defun swap (lst i j)
   (let ((val-i (nth i lst))
         (val-j (nth j lst)))
-    (swap-helper lst i j 0 val-i val-j)
-  )
-)
+    (swap-helper lst i j 0 val-i val-j)))
 
 ;; Definition: Helper function for `swap` that traverses the list recursively,
 ;;             replacing the elements at positions i and j with the swapped values.
@@ -136,15 +120,13 @@
   (cond
     ((null lst) nil)
     (t
-     (let ((x (car lst)))
-       (cons
-         (cond
-           ((= index i) val-j)
-           ((= index j) val-i)
-           (t x))
-         (swap-helper (cdr lst) i j (+ index 1) val-i val-j))))
-  )
-)
+      (let ((x (car lst)))
+        (cons
+          (cond
+            ((= index i) val-j)
+            ((= index j) val-i)
+            (t x))
+          (swap-helper (cdr lst) i j (+ index 1) val-i val-j))))))
 
 ;; Definition: Recursively applies Fisher-Yates shuffle logic.
 ;; In:
@@ -155,11 +137,9 @@
 (defun shuffle-rec (lst n)
   (cond
     ((<= n 1) lst)
-    (t (let* ((j (random n))
-              (swapped (swap lst j (- n 1))))
-         (shuffle-rec swapped (- n 1))))
-  )
-)
+    (t  (let* ( (j (random n))
+                (swapped (swap lst j (- n 1))))
+          (shuffle-rec swapped (- n 1))))))
 
 ;; Definition: Shuffles a list using Fisher-Yates algorithm.
 ;; In:
@@ -167,8 +147,7 @@
 ;; Out:
 ;;   - A new list with the same elements in random order.
 (defun shuffle (lst)
-  (shuffle-rec lst (length lst))
-)
+  (shuffle-rec lst (length lst)))
 
 ;; Definition: Clamps a value within a min and max
 ;; In:
@@ -178,5 +157,21 @@
 ;; Out:
 ;;   - Clamped value
 (defun clamp (x min max)
-  (max min (min x max))
-)
+  (max min (min x max)))
+
+;; Description: Applies a function to each element of a list and 
+;;              concatenates the results with a separator string.
+;; In:
+;;   - func: Function to apply to each element (returns a string)
+;;   - list: List of elements to process
+;;   - sep: Separator string to insert between results
+;; Out:
+;;   - A single string with all mapped elements joined by sep
+(defun mapconcat (func list sep)
+  (cond
+    ((null list) "")
+    ((null (cdr list)) (funcall func (car list)))
+    (t (concatenate 'string
+                    (funcall func (car list))
+                    sep
+                    (mapconcat func (cdr list) sep)))))
