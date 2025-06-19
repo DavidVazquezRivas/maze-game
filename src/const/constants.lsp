@@ -34,6 +34,7 @@
 (defconstant +entrance-color+ '(255 95 60))
 (defconstant +exit-color+ '(60 255 70))
 (defconstant +player-color+ '(60 100 255))
+(defconstant +visited-color+ '(255 255 60))
 
 ;; GAME CONSTANTS
 (defconstant up-keys    '(119 87))  ; w / W
