@@ -33,10 +33,11 @@
 (defun get-cell-color (cell)
   (cond 
     ((string= (caddr cell) t) +player-color+)
-    ((string= (car cell) +cell-type-path+) +path-color+)
-    ((string= (car cell) +cell-type-wall+) +wall-color+)
     ((string= (car cell) +cell-type-entrance+) +entrance-color+)
     ((string= (car cell) +cell-type-exit+) +exit-color+)
+    ((string= (cadddr cell) t) +visited-color+)
+    ((string= (car cell) +cell-type-path+) +path-color+)
+    ((string= (car cell) +cell-type-wall+) +wall-color+)
     (t +path-color+)))
 
 ;; Definition: Returns a new cell changing the type of the given

@@ -38,14 +38,17 @@
 ;;   - new-row: Row of the current/active cell
 ;;   - new-col: Column of the current/active cell
 ;; Out: A new maze object with the current cell updated
-(defun set-current (maze new-row new-col)
+(defun set-current (maze new-row new-col &optional visit)
   (let* ((grid (get-grid maze))
          (old-row (get-current-row maze))
          (old-col (get-current-col maze))
          
          ;; Get and update the old current cell (set current to NIL)
          (old-cell (get-cell grid old-row old-col))
-         (updated-old-cell (change-cell-current old-cell nil))
+         (visited-old-cell (cond
+                              (visit (visit old-cell))
+                              (t old-cell)))
+         (updated-old-cell (change-cell-current visited-old-cell nil))
          (grid-with-old-cleared (replace-in-grid grid old-row old-col updated-old-cell))
          
          ;; Get and update the new current cell (set current to T)
@@ -290,7 +293,7 @@
   (setq steps (+ steps 1))  ; Even if you can't move, step increases. Don't crash with walls!
   (cond
     ((string= (car (safe-get-cell (get-grid maze) new-row new-col)) +cell-type-wall+) maze)
-    (t (set-current maze new-row new-col))))
+    (t (set-current maze new-row new-col t))))
 
 ;; Definition: Moves the player up if it's posible
 ;; In:
