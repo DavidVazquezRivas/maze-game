@@ -243,6 +243,25 @@
                   (t +default-cell+))))
       cell)))
 
+;; Definition: Helper to get a cell from the original maze grid safely, returning a wall if it's out of range.
+;; In:
+;;   - grid: The original maze grid.
+;;   - row: The row index to retrieve.
+;;   - col: The column index to retrieve.
+;; Out: The cell at (row, col) or the +empty-cell+ if out of bounds.
+(defun get-cell-or-empty (grid row col)
+  (let* ((num-rows (length grid))
+         (row-content (cond
+                        ((and (>= row 0) (< row num-rows)) (nth row grid))
+                        (t nil)))
+         (num-cols (cond
+                      (row-content (length row-content))
+                      (t 0))))
+    (let ((cell (cond
+                  ((and row-content (>= col 0) (< col num-cols)) (nth col row-content))
+                  (t +empty-cell+))))
+      cell)))
+
 ;; Definition: Get's the viewport nth row of the grid given
 ;; In:
 ;;   - grid: The grid to get the viewport

@@ -32,6 +32,7 @@
 ;; Out: The color to be painted format rgb
 (defun get-cell-color (cell)
   (cond 
+    ((string= (car cell) +empty-type+) +empty-color+)
     ((string= (caddr cell) t) +player-color+)
     ((string= (car cell) +cell-type-entrance+) +entrance-color+)
     ((string= (car cell) +cell-type-exit+) +exit-color+)

@@ -6,9 +6,12 @@
 ;; )
 
 ;; Definition: Saves the stats of the game just played
-;; In: None
+;; In: 
+;;    - steps: Steps made on the maze
+;;    - file: The file of the maze
+;;    - start-time: Moment where the game started
 ;; Out: None
-(defun save-stats ()
+(defun save-stats (steps file start-time)
     (store-stats 
       file 
       (sort-stats-by-steps 

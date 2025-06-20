@@ -7,6 +7,7 @@
 (defconstant +cell-type-exit+ "exit")
 (defconstant +cell-type-path+ "path")
 (defconstant +cell-type-wall+ "wall")
+(defconstant +empty-type+ "")
 
 ;; CHAR REPRESENTATION TYPES
 (defconstant +char-entrance+  #\e)
@@ -29,6 +30,7 @@
 (defconstant +char-height+ 15)
 (defconstant +viewport-size+ 10)
 
+(defconstant +empty-color+ '(-1 -1 -1))
 (defconstant +wall-color+ '(0 0 0))
 (defconstant +path-color+ '(255 255 255))
 (defconstant +entrance-color+ '(255 95 60))
@@ -56,3 +58,4 @@
 ;;  visited: boolean
 ;;)
 (defconstant +default-cell+ (list +cell-type-wall+ nil nil nil))
+(defconstant +empty-cell+ (list +empty-type+ nil nil nil))

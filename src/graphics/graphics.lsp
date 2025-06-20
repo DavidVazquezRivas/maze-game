@@ -24,36 +24,55 @@
 ;; In:
 ;;   - size: Size in px
 ;;   - cell: The cell to be painted
+;;   - row: Current painting row
+;;   - col: Current painting col
 ;; Out: None
-(defun draw-cell (size cell)
-  (square size (get-cell-color cell)))
+(defun draw-cell (size cell row col)
+  (cond 
+    ((not (equal 
+            (get-cell-color cell)
+            (get-cell-color (get-cell-or-empty painted row col))))
+        (square size (get-cell-color cell)))))
 
 ;; Definition: Paints a row of cells given, with the specified cell-size
 ;; In:
 ;;   - size: Cell size in px
 ;;   - row: Row of cells
+;;   - r: Current painting row
+;;   - c: Current painting col
 ;; Out: None
-(defun draw-row (size row)
+(defun draw-row (size row r c)
   (cond
     ((null row) nil)
     (t
-      (draw-cell size (car row))
+      (draw-cell size (car row) r c)
       (moverel size 0)
-      (draw-row size (cdr row))
+      (draw-row size (cdr row) r (+ 1 c))
       (moverel (- size) 0))))
 
 ;; Definition: Paints a grid of cells given, with the specified cell-size
 ;; In:
 ;;   - size: Cell size in px
 ;;   - grid: Grid of cells
+;;   - row: Current painting row
+;;   - col: Current painting col
 ;; Out: None
-(defun draw-grid (size grid)
+(defun draw-grid-rec (size grid row col)
   (cond
     ((null grid) nil)
     (t
-      (draw-row size (car grid))
+      (draw-row size (car grid) row col)
       (moverel 0 (- size))
-      (draw-grid size (cdr grid)))))
+      (draw-grid-rec size (cdr grid) (+ 1 row) col))))
+
+;; Definition: Paints the grid, and notes the grid painted
+;; In:
+;;   - size: Cell size in px
+;;   - grid: Grid of cells
+;; Out: None (modifies painted global)
+(defun draw-grid (size grid)
+  (draw-grid-rec size grid 0 0)
+  (setq painted grid))
 
 ;; Definition: Paints a maze given, viewport or minimap
 ;; In:
@@ -115,5 +134,6 @@
 ;; Out: None
 (defun clear-screen ()
   (cls)
+  (setq painted '())
   (color 0 0 0)
   (draw-instructions))

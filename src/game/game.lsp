@@ -4,35 +4,35 @@
 ;; Out: None
 (defun start-game (f)
   (clear-screen)
-  (setq steps 0)
-  (setq file f)
-  (setq start-time (get-internal-real-time))
-  (play (load-maze f)))
+  (play (load-maze f) 0 f (get-internal-real-time)))
 
 ;; Definition: Play recursive function
 ;; In: 
 ;;    - maze: The maze of the game
+;;    - steps: Steps made on the maze
+;;    - file: The file of the maze
+;;    - start-time: Moment where the game started
 ;; Out: None
-(defun play (maze)
+(defun play (maze steps file start-time)
   (cond
-    ((check-win maze) (end-game maze))
+    ((check-win maze) (end-game maze steps file start-time))
     (t 
       (draw-maze maze)
       (setq key (get-key))
       (cond
         ((member key up-keys)
-         (play (move-up maze)))
+         (play (move-up maze) (+ 1 steps) file start-time))
         ((member key left-keys)
-         (play (move-left maze)))
+         (play (move-left maze) (+ 1 steps) file start-time))
         ((member key down-keys)
-         (play (move-down maze)))
+         (play (move-down maze) (+ 1 steps) file start-time))
         ((member key right-keys)
-         (play (move-right maze)))
+         (play (move-right maze) (+ 1 steps) file start-time))
         ((member key map-keys)
          (clear-screen)
-         (play (switch-minimap maze)))
+         (play (switch-minimap maze) steps file start-time))
         ((= key esc-key) t)
-        (t (play maze))))))
+        (t (play maze steps file start-time))))))
 
 ;; Definition: Checks if the game is won
 ;; In: 
@@ -46,9 +46,16 @@
             (get-current-row maze)
             (get-current-col maze)))))
 
-(defun end-game (maze)
-  (save-stats)
+;; Definition: Game ending actions (save stats and display)
+;; In: 
+;;    - maze: The maze of the game
+;;    - steps: Steps made on the maze
+;;    - file: The file of the maze
+;;    - start-time: Moment where the game started
+;; Out: None
+(defun end-game (maze steps file start-time)
+  (save-stats steps file start-time)
   (cls)
   (color 0 0 0)
-  (format t "You have completed the maze in ~a steps" steps)
-  (display-stats file))
+  (format t "You have completed the maze in ~a steps\n" steps)
+  (format t "~a~%" (display-stats file)))
