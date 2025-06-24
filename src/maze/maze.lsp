@@ -309,7 +309,6 @@
 ;;   - new-col: New player's column
 ;; Out: The maze updated
 (defun move-player (maze new-row new-col)
-  (setq steps (+ steps 1))  ; Even if you can't move, step increases. Don't crash with walls!
   (cond
     ((string= (car (safe-get-cell (get-grid maze) new-row new-col)) +cell-type-wall+) maze)
     (t (set-current maze new-row new-col t))))
