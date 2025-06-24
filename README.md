@@ -106,15 +106,19 @@ El proceso de generación del laberinto sigue una serie de pasos definidos que g
 5. **Colocación de la entrada**: se escoge una casilla aleatoria del borde seleccionado, evitando esquinas, y se marca como entrada. La posición `current` del laberinto se actualiza a esta celda.
 6. **Colocación de la salida**: se selecciona una casilla aleatoria del borde opuesto (también evitando esquinas) y se marca como salida.
 7. **Algoritmo de generación del camino**:
+   
    7.1. Desde la celda `current`, se obtienen sus vecinos candidatos.
+   
    7.2. La lista de vecinos se mezcla aleatoriamente para generar trayectorias diferentes en cada ejecución.
+   
    7.2. Se exploran los vecinos de forma recursiva:
      - Si un vecino tiene como máximo un vecino marcado como camino y no está en el borde, se acepta como nuevo camino.
      - El `current` se mueve a dicha celda, que se marca como camino, y se repite el proceso.
+   
    7.4. En caso de que no se logre conectar con la salida (situación que ocurre en aproximadamente un 10% de los casos), se reinicia la generación. Esta comprobación es necesaria debido a que se fuerza la salida en un borde opuesto, lo que puede generar configuraciones sin solución válida.
-8. **Codificación del laberinto**: se transforma cada celda del grid en su carácter correspondiente, según el tipo asignado (pared, camino, entrada, salida...).
-9. **Creación del archivo**: se genera un archivo de texto que contiene el laberinto codificado.
-10. **Generación de estadísticas**: se crea un archivo adicional para almacenar las estadísticas del laberinto generado.
+9. **Codificación del laberinto**: se transforma cada celda del grid en su carácter correspondiente, según el tipo asignado (pared, camino, entrada, salida...).
+10. **Creación del archivo**: se genera un archivo de texto que contiene el laberinto codificado.
+11. **Generación de estadísticas**: se crea un archivo adicional para almacenar las estadísticas del laberinto generado.
 
 ### Pintado del laberinto
 
